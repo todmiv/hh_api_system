@@ -38,8 +38,14 @@ def process_vacancy(res, rate, skills_, salary):
 
 def process_skills(skills_, salary, result):
     sk2 = Counter(skills_)
-    up = sum(salary['from']) / len(salary['from'])
-    down = sum(salary['to']) / len(salary['to'])
+    if salary['from']:
+        up = sum(salary['from']) / len(salary['from'])
+    else:
+        up = 0
+    if salary['to']:
+        down = sum(salary['to']) / len(salary['to'])
+    else:
+        down = 0
     result.update({'down': round(up, 2), 'up': round(down, 2)})
     add = []
     for name, count in sk2.most_common(15):
