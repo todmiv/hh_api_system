@@ -1,0 +1,52 @@
+/* Страница с настройками поиска */
+body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+.container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+form {
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: left;
+}
+
+label, input, select {
+    display: block;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+input[type="submit"], button.search-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 5px;
+    margin: 0 auto;
+}
+
+a {
+    display: block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
