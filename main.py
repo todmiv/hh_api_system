@@ -1,3 +1,10 @@
+"""
+HH API System - анализ вакансий с HeadHunter API.
+
+Скрипт анализирует вакансии, извлекает навыки, зарплаты, конвертирует валюты.
+Результаты сохраняются в result.json.
+"""
+
 from pprint import pprint
 import re
 from collections import Counter
@@ -7,6 +14,12 @@ from pycbrf import ExchangeRates
 
 
 def get_vacancy_data(vacancy):
+    """
+    Получает данные о вакансиях с HH API для заданной вакансии.
+
+    :param vacancy: название вакансии для поиска
+    :return: количество страниц, общее количество вакансий, список вакансий
+    """
     params = {'text': vacancy}
     result = get(url=url, params=params).json()
     count_pages = result['pages']
@@ -15,6 +28,14 @@ def get_vacancy_data(vacancy):
 
 
 def process_vacancy(res, rate, skills_, salary):
+    """
+    Обрабатывает одну вакансию: извлекает навыки и зарплату.
+
+    :param res: данные вакансии
+    :param rate: курсы валют
+    :param skills_: список навыков
+    :param salary: словарь зарплат
+    """
     skills = set()
     res_full = get(res['url']).json()
     pp = res_full['description']
@@ -32,11 +53,19 @@ def process_vacancy(res, rate, skills_, salary):
         if rate[code] is None:
             code = 'RUR'
         k = 1 if code == 'RUR' else float(rate[code].value)
-        salary['from'].append(k * res_full['salary']['from'] if res['salary']['from'] else k * res_full['salary']['to'])
-        salary['to'].append(k * res_full['salary']['to'] if res['salary']['to'] else k * res_full['salary']['from'])
+        salary['from'].append(k * res_full['salary']['from'] if res_full['salary']['from'] else k * res_full['salary']['to'])
+        salary['to'].append(k * res_full['salary']['to'] if res_full['salary']['to'] else k * res_full['salary']['from'])
 
 
 def process_skills(skills_, salary, result):
+    """
+    Обрабатывает навыки и зарплаты, формирует итоговый результат.
+
+    :param skills_: список навыков
+    :param salary: словарь зарплат
+    :param result: итоговый словарь
+    :return: обновленный результат
+    """
     sk2 = Counter(skills_)
     up = sum(salary['from']) / len(salary['from'])
     down = sum(salary['to']) / len(salary['to'])
